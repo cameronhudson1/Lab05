@@ -9,6 +9,11 @@
 #include "MK64F12.h"
 #include "uart.h"
 #include "pwm.h"
+#include "gpio.h"
+
+//#define PART1
+//#define PART2
+#define PART3
 
 void delay(int del);
 
@@ -20,15 +25,12 @@ int main(void) {
 	// Print welcome over serial
 	uart0_put("Running... \n\r");
 	
-    /*
-	// Part 1 - UNCOMMENT THIS
+#ifdef PART1
 	// Generate 20% duty cycle at 10kHz
     FTM0_set_duty_cycle(20, 10000, 1);
-	
+#endif
+#ifdef PART2
 	//for(;;) ;  //then loop forever
-	*/
-    /*
-	// Part 2 - UNCOMMENT THIS
 	for(;;)  //loop forever
 	{
 		//uint16_t dc = 0;
@@ -66,7 +68,67 @@ int main(void) {
 		}
 
 	}
-    */
+#endif
+    
+#ifdef PART2
+    
+    gpio_init();
+    
+    int forward = 1;
+    int phase = 0;
+    while ( 0 ){
+        // Turn off all coils , Set GPIO pins to 0
+        // Set one pin high at a time
+        if( forward )
+        {
+            if( phase == 0)
+            { 
+                /* turn on coil A*/
+                phase ++;
+            } //A, 1a
+            else if( phase == 1)
+            { 
+                /* turn on coil B*/
+                phase ++;
+            } //B ,2a
+            else if ( phase == 2) 
+            { 
+                /* turn on coil C*/
+                phase ++;
+            } //C ,1b
+            else 
+            { 
+                /* turn on coil D*/
+                phase =0;
+            } //D ,2b
+        }
+        else 
+        {// reverse
+            if ( phase == 0)
+            { 
+                /* turn on coil D*/ 
+                phase ++;
+            } //D ,2b
+            else if ( phase == 1) 
+            { 
+                /* turn on coil C*/ 
+                phase ++;
+            } //C ,1b
+            else if ( phase == 2)
+            { 
+                /* turn on coil B*/
+                phase ++;
+            } //B ,2a
+            else 
+            { 
+                /* turn on coil A*/
+                phase = 0;
+            } //A ,1a
+        }
+        delay (10); // smaller values = faster speed
+    }
+#endif
+    
 	return 0;
 }
 
