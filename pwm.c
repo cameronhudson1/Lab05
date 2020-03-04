@@ -18,6 +18,14 @@
 /*
  * Change the motor duty cycle and frequency
  *
+ * CHANNEL 1, 2,3 4,
+ *  MOTOR 1 : ENABLE B2  DRIVING C1, C2
+ *  MPTOR 2 : ENABLE B3  DRIVING C3, C4
+ *
+ * STEERING SERVO PTC8 
+ *  C8
+ *   
+ *
  * @param duty_cycle (0 to 100)
  * @param frequency (~1000 Hz to 20000 Hz)
  * @param dir: 1 for pin C4 active, else pin C3 active 
@@ -85,3 +93,4 @@ void FTM0_init()
 	// Timer Overflow Interrupt Enable
 	FTM0_SC = FTM_SC_PS(0) | FTM_SC_CLKS(1); 
 }
+
